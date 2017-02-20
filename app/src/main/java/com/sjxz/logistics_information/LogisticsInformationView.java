@@ -69,6 +69,7 @@ public class LogisticsInformationView extends View {
         radius = typedArray.getDimension(R.styleable.LogisticsInformationView_radius, 10);
         //程序在运行时维护了一个 TypedArray的池，程序调用时，会向该池中请求一个实例
         //用完之后，调用 recycle() 方法来释放该实例，从而使其可被其他模块复用。所以一定要调用
+
         typedArray.recycle();
         init();
     }
