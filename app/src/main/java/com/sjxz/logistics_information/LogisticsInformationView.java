@@ -154,7 +154,7 @@ public class LogisticsInformationView extends View {
             return;
 
         List data = logisticsDataList;
-        canvas.drawRect(left, top, width + left, heightTotal + top, paint);//首先确认画布的宽高
+        canvas.drawRect(left, top, width + left, heightTotal + top, paint);//首先确认画布的高度绘制矩形（就是贯穿圆心的连接直线,画笔默认是fill模式）
         for (int i = 0; i < logisticsDataList.size(); i++) {
 
             if (i == 0) {
