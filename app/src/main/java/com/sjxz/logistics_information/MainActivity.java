@@ -53,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
         logisticsDataList.add(new LogisticsData().setTime("2017-1-19 23:11:37").setContext("[苏州市]江苏苏州分拨中心  已发出"));
         logisticsDataList.add(new LogisticsData().setTime("2017-1-19 23:08:06").setContext("[苏州市]快件已到达  江苏苏州分拨中心"));
         logisticsDataList.add(new LogisticsData().setTime("2017-1-19 15:52:43").setContext("[泰州市]韵达快递  江苏靖江市公司收件员  已揽件"));
-        logisticsDataList.add(new LogisticsData().setTime("2017-1-19 12:39:15").setContext("包裹正等待揽件"));
+        logisticsDataList.add(new LogisticsData().setTime("2017-1-19 12:39:15").setContext("菜鸟驿站代收，请及时取件，如有疑问请联系 程先生:18061208980"));
 
 
         logistics_InformationView.setLogisticsDataList(logisticsDataList);

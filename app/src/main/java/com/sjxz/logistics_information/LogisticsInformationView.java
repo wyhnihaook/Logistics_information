@@ -261,7 +261,6 @@ public class LogisticsInformationView extends View {
         if(initData!=null){
             //说明有电话号码，进行数据分割,默认每一段content中最多包含一个手机号码
             String[] splitData=data.split(initData);
-            LogUtils.i(splitData[0]+"=="+splitData[1]);
             return splitData;
         }
         //没有电话号码就返回null
@@ -317,9 +316,6 @@ public class LogisticsInformationView extends View {
     public void splitPhoneData(String[] splitData ,Canvas canvas,TextPaint textPaint,int heightData,boolean isTop){
         StaticLayout layoutPhone = new StaticLayout(phoneNumber, textPaintPhone, (int) (windowWidth * 0.8), Layout.Alignment.ALIGN_NORMAL, 1.0F, 0.0F, true);
 
-        //获取最后一段的宽度
-        StaticLayout layoutLast = new StaticLayout(splitData[1], textPaint, (int) (windowWidth * 0.8), Layout.Alignment.ALIGN_NORMAL, 1.0F, 0.0F, true);
-
         //1.首先绘制电话前段的数据
         StaticLayout layout = new StaticLayout(splitData[0], textPaint, (int) (windowWidth * 0.8), Layout.Alignment.ALIGN_NORMAL, 1.0F, 0.0F, true);
         int layoutFirst=layout.getHeight();
@@ -327,6 +323,31 @@ public class LogisticsInformationView extends View {
         canvas.translate(left * 2 + radius * 2 + 10, heightData +(isTop?0:top));
         layout.draw(canvas);
         canvas.restore();//重置
+
+        //判断截取端是多少
+        if(splitData.length<=1){
+            //没有后续
+            //2.判断是剩下的宽度是否能够容纳手机号码宽度
+            if((int) (windowWidth * 0.8)-layout.getLineWidth(layout.getLineCount()-1)>phoneNumberWidth){
+                phoneYNumber.put((float) ( heightData+(isTop?-10:10)+layoutPhone.getHeight()),phoneNumber);
+                stopYX.put((float) ( heightData+(isTop?-10:10)+layoutPhone.getHeight()),left * 2 + radius * 2 + 10+(layout.getLineWidth(layout.getLineCount()-1))+phoneNumberWidth);
+                stopYList.add((float) ( heightData+(isTop?-10:10)+layoutPhone.getHeight()));
+                mPaintPhone.setColor(getResources().getColor(R.color.colorPrimaryDark));
+                canvas.drawText(phoneNumber, left * 2 + radius * 2 + 10+(layout.getLineWidth(layout.getLineCount()-1)), layoutFirst+ heightData+(isTop?-10:10), mPaintPhone);
+            }else{
+                phoneYNumber.put((float) (layoutFirst+heightData +(isTop?0:top)+layoutPhone.getHeight()),phoneNumber);
+                stopYX.put((float) (layoutFirst+heightData +(isTop?0:top)+layoutPhone.getHeight()),left * 2 + radius * 2 + 10+phoneNumberWidth);
+                stopYList.add((float) (layoutFirst+heightData +(isTop?0:top)+layoutPhone.getHeight()));
+                //5.1获取之前的高度
+                canvas.save();//很重要，不然会样式出错
+                canvas.translate(left * 2 + radius * 2 + 10, layoutFirst+heightData +(isTop?0:top));
+                layoutPhone.draw(canvas);
+                canvas.restore();//重置
+            }
+        }else{
+            //有后续
+        //获取最后一段的宽度
+        StaticLayout layoutLast = new StaticLayout(splitData[1], textPaint, (int) (windowWidth * 0.8), Layout.Alignment.ALIGN_NORMAL, 1.0F, 0.0F, true);
 
         //2.判断是剩下的宽度是否能够容纳手机号码宽度
         if((int) (windowWidth * 0.8)-layout.getLineWidth(layout.getLineCount()-1)>phoneNumberWidth){
@@ -392,6 +413,8 @@ public class LogisticsInformationView extends View {
                 layoutlastString.draw(canvas);
                 canvas.restore();//重置
             }
+        }
+
         }
     }
 
